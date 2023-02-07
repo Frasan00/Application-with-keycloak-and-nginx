@@ -51,6 +51,7 @@ services:
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf:ro
     depends_on:
+      # mast be the last one to start since has to redirect to those servicies
       - keycloak
       - server
       - client
