@@ -1,19 +1,57 @@
 version: '3'
 services:
+
   db:
     image: postgres
     environment:
-      POSTGRES_USER: keycloak
+      POSTGRES_USER: admin
       POSTGRES_PASSWORD: password
       POSTGRES_DB: keycloak
+    ports:
+      - "1000:1000"
 
   keycloak:
     image: jboss/keycloak
     environment:
-      DB_VENDOR: POSTGRES
+      KEYCLOAK_USER: admin
+      KEYCLOAK_PASSWORD: admin
+      DB_VENDOR: postgres
       DB_ADDR: db
       DB_DATABASE: keycloak
-      DB_USER: keycloak
+      DB_USER: admin
       DB_PASSWORD: password
     ports:
-      - 8080:8080
+      - "2000:2000"
+    depends_on:
+      - db
+
+  server:
+    build:
+      context: server
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - "5000:5000"
+    depends_on:
+      - db
+
+  client:
+    build:
+      context: client
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    depends_on:
+      - server
+
+  nginx:
+    image: nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - keycloak
+      - server
+      - client
+      - db
