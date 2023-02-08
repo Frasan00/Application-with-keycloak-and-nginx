@@ -8,7 +8,7 @@ services:
       POSTGRES_PASSWORD: password
       POSTGRES_DB: keycloak
     ports:
-      - "1000:1000"
+      - "5432:5432"
 
   keycloak:
     image: jboss/keycloak
@@ -30,6 +30,11 @@ services:
       context: server
       dockerfile: Dockerfile
     restart: always
+    environment:
+      POSTGRES_HOST: localhost
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: keycloak
     ports:
       - "5000:5000"
     depends_on:
