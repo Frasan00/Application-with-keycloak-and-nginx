@@ -1,81 +1,29 @@
-import "bootstrap/dist/css/bootstrap.css";
-import { BrowserRouter as Router, Route, Switch, Redirect} from "react-router-dom";
+import axios from "axios";
 import './App.css';
-import React, { useState, useEffect } from "react";
-
-// pages
-import { LoginPage } from "./routes/authRoute/LoginPage";
-import { HomePage } from "./routes/homeRoute/HomePage";
-import { RegisterPage } from "./routes/authRoute/RegisterPage";
+import { connect } from "./keycloack/connection";
+import React, {useEffect, useState} from "react";
 
 
 function App() {
 
-  // initialize from the browser local storage
-  const [userName, setUserName] = useState(() => {
-    const storedUserName = localStorage.getItem('username');
-    return storedUserName ? localStorage.getItem('username'): "";
-  });
+  const [isLogged, setIsLogged] = useState(false);
+  const [jwt, setJwt] = useState("");
 
-  const [jwt, setJwt] = useState(() => {
-    const storedJwt = localStorage.getItem('jwt');
-    return storedJwt ? localStorage.getItem('jwt'): "";
-  });
-
-  const [isLogged, setIsLogged] = useState(() => {
-    const storedKey = localStorage.getItem('isLogged');
-    return storedKey ? JSON.parse(storedKey) : false;
-  });
-
-
-  // initializes some information with the browser local storage in order to log only once
+  // env variales controller
   useEffect(() => {
-    localStorage.setItem("username", userName);
-    localStorage.setItem("jwt", jwt);
-    localStorage.setItem('isLogged', JSON.stringify(isLogged));
-  }, [userName, jwt, isLogged]);
+    if (!process.env.REACT_APP_URL){ console.log("REACT_APP_URL env variable not set in .env"); }
+    if (!process.env.REACT_APP_REALM){ console.log("REACT_APP_REALM env variable not set in .env"); }
+    if (!process.env.REACT_APP_CLIENTID){ console.log("REACT_APP_CLIENTID env variable not set in .env"); }
 
+    // keycloak config
+    connect()
+  }, [])
+  
   return (
-    <Router>
-      <div className="MainApp">
-        <Switch>
-
-          {/* initializes localhost to /auth */}
-          <Route exact path="/">
-            <Redirect to="/login" />
-          </Route>
-
-          {isLogged === true ?
-            <Route exact path="/login">
-              <Redirect to="/home"></Redirect>
-            </Route>
-            :
-            <Route exact path="/home">
-              <Redirect to="/login"></Redirect>
-            </Route>
-          }
-
-          <Route path="/login">
-            <LoginPage 
-            setUserName={setUserName} setJwt={setJwt}
-            setIsLogged={setIsLogged}  userName={userName}
-            />
-          </Route>
-
-          <Route path="/register">
-            <RegisterPage />
-          </Route>
-
-          <Route path="/home">
-            <HomePage
-            userName={userName} jwt={jwt}
-            setIsLogged={setIsLogged}
-            />
-          </Route>
-
-        </Switch>
-      </div>
-    </Router>
+    <div className="App">
+      { isLogged === true &&  <h1>You're logged in the application</h1> }
+      { isLogged === false &&  <h1>You're not logged in the application</h1> }
+    </div>
   );
 }
 
