@@ -9,5 +9,5 @@
 
 1) Create a realm (remember to change env var properly to match your realm name, default: react-realm)
 2) Create a client (remember to change env var properly to match your client name, default: user)
-3) Set up client valid_redirect_uri to "localhost/client/"
-4) Set up the kind of authentication you want (register, email, remember me etc.)
+3) Set up client valid_redirect_uri to "http://localhost/home"
+4) Set up the kind of authentication you want (register, email, remember me etc.) in login settings
