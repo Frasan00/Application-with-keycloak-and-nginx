@@ -1,16 +1,30 @@
-import { getPublicKey } from "./keycloakConf";
+
 import { Request, Response, NextFunction } from "express";
-import jwt from 'jsonwebtoken';
+import request from "request";
 
+
+// middleware to validate tokens from keycloak
 export const keycloakMiddleware = async (req: Request, res: Response, next: NextFunction) => {
-    console.log(await getPublicKey())
-    console.log(req.headers["authorization"])
-    if (!req.headers["authorization"]) return res.status(400).send({auth: false, description: "No header provided"});
-    const token = req.headers["authorization"].split(" ")[1];
-    const realmPublicKey = await getPublicKey();
+    const token = req.headers["authorization"]?.split(" ")[1];
+    console.log(token)
 
-    const validation = jwt.verify(token, realmPublicKey,  (err: any) => {
-        if(err) res.status(400).send({auth: false, description: "Token not valid"});
+    const config = {
+        method: 'GET',
+        url: "/auth/token",
+        headers: {
+          Authorization: token
+        },
+    }
+
+    request(config, (error, response, body) => {
+        if (error) return res.status(400).json(error);
+  
+        // invalid token
+        if (response.statusCode !== 200) {
+          return res.status(401).json({
+            error: `unauthorized`,
+          });
+        }
         next();
-    });
+      });
 }
