@@ -9,27 +9,20 @@ export const AuthPage = ({setJwt}) => {
         if (!process.env.REACT_APP_REALM){ console.log("REACT_APP_REALM env variable not set in .env"); }
         if (!process.env.REACT_APP_CLIENTID){ console.log("REACT_APP_CLIENTID env variable not set in .env"); }
 
-        setJwt("");
-
         // keycloak config
-        
         keycloak.init({ 
-        onLoad: 'login-required',
+        onLoad: 'login-required',   
         promiseType: 'native',
-        "checkLoginIframe": true,
         redirectUri: "http://localhost/home"
-        }).then((res) => {
-            if (res) {
-            console.log('User is authenticated');
-            console.log("token: "+keycloak.token);
+        })
+        .then((authenticated) => {
+            console.log("Authenticated");
             setJwt(keycloak.token);
-        } else {
-            console.log('User is not authenticated');
-            }
-        });
-    })
+        })
+        .catch(err => console.error(err));
+    }, [])
 
     return(
-        <h1>Please refresh the page untill keycloak is active to authenticate </h1>
+        <h1>Please refresh the page untill keycloak is running to authenticate </h1>
     )
 }

@@ -12,10 +12,10 @@ function App() {
     return storedJwt ? storedJwt : "";
   });
 
-  // localstorage useEffect
   useEffect(() => {
     localStorage.setItem("jwt", jwt);
   }, [jwt])
+
 
   return (
     <Router>
