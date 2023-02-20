@@ -2,7 +2,7 @@ import {BrowserRouter as Router, Switch, Route} from "react-router-dom";
 import './App.css';
 import { AuthPage } from "./paths/AuthPage";
 import { HomePage } from "./paths/HomePage";
-import React, {useEffect, useState} from "react";
+import React, { useState, useEffect } from "react";
 
 
 function App() {
@@ -15,7 +15,6 @@ function App() {
   useEffect(() => {
     localStorage.setItem("jwt", jwt);
   }, [jwt])
-
 
   return (
     <Router>

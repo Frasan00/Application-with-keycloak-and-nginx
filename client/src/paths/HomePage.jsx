@@ -7,12 +7,13 @@ export const HomePage = ({jwt}) => {
     const [value, setValue] = useState(0);
 
     useEffect(() => {
-        keycloak.init();
+        const timer = setInterval(() => {
+            console.log("Token: "+keycloak.getToken());
+        }, 1000)
     }, [])
 
-    const handleClick = () => {
-        console.log("token: "+jwt)
-        axios.post("/api/auth", {
+    const handleClick = ()=>{
+        axios.post("http://localhost/api/auth", {}, {
             headers: {
               Authorization: `Bearer ${jwt}`,
             }})
@@ -22,14 +23,15 @@ export const HomePage = ({jwt}) => {
         .catch(err => console.error(err));
     }
 
-    const handleLogOut = () => {
+    /*const handleLogOut = () => {
         localStorage.clear();
-        keycloak.logout({redirectUri: "http://localhost:80/"})
+        keycloak.init()
+        keycloak.logout({redirectUri: "http://localhost:3000/"})
         .then(() => {
             keycloak.clearToken();
         })
         .catch(err => console.error(err));
-    } 
+    } */
 
     return(
         <div>

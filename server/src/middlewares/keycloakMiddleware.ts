@@ -4,13 +4,14 @@ import request from "request";
 
 
 // middleware to validate tokens from keycloak
-export const keycloakMiddleware = async (req: Request, res: Response, next: NextFunction) => {
+export const keycloakMiddleware = (req: Request, res: Response, next: NextFunction) => {
     const token = req.headers["authorization"]?.split(" ")[1];
-    console.log(token)
+    const realm = process.env.REALM || "";
+    console.log("token: "+token);
 
     const config = {
         method: 'GET',
-        url: "/auth/token",
+        url: `http://keycloak:8080/auth/realms/${realm}/protocol/openid-connect/userinfo`,
         headers: {
           Authorization: token
         },

@@ -1,28 +1,32 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { keycloak } from "../keycloakConf";
+import {BrowserRouter as Router, Switch, Route, Redirect} from "react-router-dom";
 
 export const AuthPage = ({setJwt}) => {
 
-    // env variales controller
-    useEffect(() => {
-        if (!process.env.REACT_APP_URL){ console.log("REACT_APP_URL env variable not set in .env"); }
-        if (!process.env.REACT_APP_REALM){ console.log("REACT_APP_REALM env variable not set in .env"); }
-        if (!process.env.REACT_APP_CLIENTID){ console.log("REACT_APP_CLIENTID env variable not set in .env"); }
+    const [logged, setLogged] = useState(false);
 
-        // keycloak config
-        keycloak.init({ 
-        onLoad: 'login-required',   
-        promiseType: 'native',
-        redirectUri: "http://localhost/home"
-        })
-        .then((authenticated) => {
-            console.log("Authenticated");
-            setJwt(keycloak.token);
-        })
-        .catch(err => console.error(err));
-    }, [])
+    useEffect(() => {
+        keycloak.loginReact(setLogged);
+    }, []);
 
     return(
-        <h1>Please refresh the page untill keycloak is running to authenticate </h1>
+        <Router>
+            <div>
+                <Switch>    
+                    {logged === true ? 
+                    <Route exact path = "http://localhost/">
+                        <Redirect to="http://localhost:3000/home" />
+                    </Route>
+                    :
+                    <Route exact path = "http/">
+                        <Redirect to="http://localhost:3000/home" />
+                    </Route>
+                    }
+                    <h1>Please refresh the page untill keycloak is running to authenticate </h1> 
+                </Switch>
+            </div>
+        </Router>
+
     )
 }
