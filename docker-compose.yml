@@ -35,7 +35,7 @@ services:
       dockerfile: Dockerfile
     restart: always
     environment:
-      REALM: "react-realm"
+      REALM: react-realm
     ports:
       - "5000:5000"
 
@@ -43,6 +43,9 @@ services:
     build:
       context: client
       dockerfile: Dockerfile
+    environment:
+      REACT_APP_REALM: react-realm
+      REACT_APP_CLIENTID: user
     ports:
       - "3000:3000"
     depends_on:
@@ -61,5 +64,7 @@ services:
       - server
       - db
 
+
 volumes:
   db:
+

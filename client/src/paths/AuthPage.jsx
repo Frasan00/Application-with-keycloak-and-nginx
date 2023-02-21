@@ -10,9 +10,8 @@ export const AuthPage = ({setAuthenticated, setJwt}) => {
 
     useEffect(() => {
         if (isRun.current) return;
-
         isRun.current = true;
-        keycloak.init({ onLoad: 'login-required' }) // to change to "check-sso"
+        keycloak.init({ onLoad: 'login-required' })
         .then(() => {
             console.log("Authenticated");
             setJwt(keycloak.token);

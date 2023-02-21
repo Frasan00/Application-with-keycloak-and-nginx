@@ -4,14 +4,16 @@ import request from "request";
 
 // middleware to validate tokens from keycloak
 export const keycloakMiddleware = (req: Request, res: Response, next: NextFunction) => {
-  const token = req.headers["authorization"]?.split(" ")[1];
+  console.log("New request");
+    const token = req.headers["authorization"]?.split(" ")[1];
     const realm = process.env.REALM || "";
 
     const config = {
         method: 'GET',
-        url: `http://keycloak:8080/auth/realms/${realm}/protocol/openid-connect/userinfo`,
+        url: `http://keycloak:8080/auth/realms/${realm}/protocol/openid-connect/userinfo,
+        `,
         headers: {
-          Authorization: `Bearer ${token}`
+          authorization: `Bearer ${token}`
         },
     }
 
@@ -21,10 +23,8 @@ export const keycloakMiddleware = (req: Request, res: Response, next: NextFuncti
         // invalid token
         if (response.statusCode !== 200) {
           console.log("Not authorized transaction");
-          console.log(response);
           return res.status(401).json(body);
         }
-
         next();
       });
 }

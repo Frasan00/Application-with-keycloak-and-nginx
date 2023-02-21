@@ -10,7 +10,7 @@ export const HomePage = ({setAuthenticated, jwt}) => {
     const handleClick = ()=>{
         axios.post("http://localhost:5000/api/auth", {}, {
             headers: {
-                authorization: `Bearer ${keycloak.token}`,
+                authorization: `Bearer ${jwt}`,
             }})
         .then(() => {
             setValue(value + 1);
@@ -20,8 +20,9 @@ export const HomePage = ({setAuthenticated, jwt}) => {
 
     const handleLogOut = () => {
         localStorage.clear();
+        setAuthenticated(false);
         keycloak.init()
-        keycloak.logout({redirectUri: "http://localhost/"})
+        keycloak.logout({redirectUri: "http://localhost:3000/"})
         .then(() => {
             keycloak.clearToken();
         })
