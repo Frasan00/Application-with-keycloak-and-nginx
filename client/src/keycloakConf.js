@@ -7,7 +7,7 @@ const realm = process.env.REACT_APP_REALM;
 const clientId = process.env.REACT_APP_CLIENTID;
 
 export const keycloak = new Keycloak({
-    url: "http://keycloak:8080/authg ",
+    url: "http://keycloak:8080/auth",
     realm: realm,
     clientId: clientId,
 });

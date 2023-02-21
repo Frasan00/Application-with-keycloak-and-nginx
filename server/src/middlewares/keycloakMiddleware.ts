@@ -10,8 +10,7 @@ export const keycloakMiddleware = (req: Request, res: Response, next: NextFuncti
 
     const config = {
         method: 'GET',
-        url: `http://keycloak:8080/auth/realms/${realm}/protocol/openid-connect/userinfo,
-        `,
+        url: `http://keycloak:8080/auth/realms/${realm}/protocol/openid-connect/userinfo`,
         headers: {
           authorization: `Bearer ${token}`
         },
