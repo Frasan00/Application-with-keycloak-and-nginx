@@ -1,32 +1,25 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef } from "react";
 import { keycloak } from "../keycloakConf";
-import {BrowserRouter as Router, Switch, Route, Redirect} from "react-router-dom";
+import React from "react";
 
-export const AuthPage = ({setJwt}) => {
 
-    const [logged, setLogged] = useState(false);
+export const AuthPage = ({setAuthenticated, setJwt}) => {
+
+    // since in restrict mode useEffect runs twice, we use a useRef  to return as soon as the second useEffect runs
+    const isRun = useRef(false);
 
     useEffect(() => {
-        keycloak.loginReact(setLogged);
-    }, []);
+        if (isRun.current) return;
+
+        isRun.current = true;
+        keycloak.init({ onLoad: 'login-required' }) // to change to "check-sso"
+        .then(() => {
+            console.log("Authenticated");
+            setJwt(keycloak.token);
+            setAuthenticated(true);
+        })}, []);
 
     return(
-        <Router>
-            <div>
-                <Switch>    
-                    {logged === true ? 
-                    <Route exact path = "http://localhost/">
-                        <Redirect to="http://localhost:3000/home" />
-                    </Route>
-                    :
-                    <Route exact path = "http/">
-                        <Redirect to="http://localhost:3000/home" />
-                    </Route>
-                    }
-                    <h1>Please refresh the page untill keycloak is running to authenticate </h1> 
-                </Switch>
-            </div>
-        </Router>
-
+        <h1>Please refresh the page untill keycloak is running to authenticate </h1> 
     )
 }
