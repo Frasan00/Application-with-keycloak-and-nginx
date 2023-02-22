@@ -1,11 +1,13 @@
-import { keycloak } from "../keycloakConf";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
+import { AuthContext } from "../App";
 import axios from "axios";
 
-export const HomePage = ({setAuthenticated, jwt}) => {
+export const HomePage = () => {
 
     const [value, setValue] = useState(0);
-    useEffect(()=>console.log("token: "+jwt))
+    const { setAuthenticated, jwt, keycloak } = useContext(AuthContext);
+
+    useEffect(()=> console.log("token: "+jwt))
 
     const handleClick = ()=>{
         axios.post("http://localhost:5000/api/auth", {}, {
@@ -19,12 +21,11 @@ export const HomePage = ({setAuthenticated, jwt}) => {
     }
 
     const handleLogOut = () => {
-        localStorage.clear();
-        setAuthenticated(false);
         keycloak.init()
-        keycloak.logout({redirectUri: "http://localhost:3000/"})
+        keycloak.logout({checkLoginIframe: false })
         .then(() => {
             keycloak.clearToken();
+            setAuthenticated(false);
         })
         .catch(err => console.error(err));
     } 

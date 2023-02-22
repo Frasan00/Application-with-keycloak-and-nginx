@@ -1,4 +1,4 @@
-version: '3.9'
+version: '3'
 services:
 
   db:
@@ -7,6 +7,7 @@ services:
       POSTGRES_USER: admin
       POSTGRES_PASSWORD: password
       POSTGRES_DB: keycloak
+    restart: always
     ports:
       - "5432:5432"
     volumes:
@@ -27,7 +28,7 @@ services:
       - "8080:8080"
     depends_on:
       - db
-    
+
 
   server:
     build:
@@ -35,15 +36,20 @@ services:
       dockerfile: Dockerfile
     restart: always
     environment:
+      LOCALHOST_DOMAIN: fra.com # change it with your domain name
       REALM: react-realm
     ports:
       - "5000:5000"
+    extra_hosts:
+      - "fra.com:192.168.1.207" # change it in /etc/hosts with your domain and your ip addr
 
   client:
     build:
       context: client
       dockerfile: Dockerfile
     environment:
+      REACT_APP_HOST_DOMAIN: fra.com # change it with your domain name
+      REACT_APP_AUTH_SERVER_URL: http://fra.com:8080/auth # change it with your host
       REACT_APP_REALM: react-realm
       REACT_APP_CLIENTID: user
     ports:
@@ -63,6 +69,8 @@ services:
       - keycloak
       - server
       - db
+    extra_hosts:
+      - "fra.com:192.168.1.207" # change it in /etc/hosts with your domain and your ip addr
 
 
 volumes:

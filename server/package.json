@@ -17,6 +17,7 @@
     "express": "^4.18.2",
     "express-validator": "^6.14.3",
     "keycloak-admin": "^1.14.22",
+    "keycloak-js": "^20.0.5",
     "pg": "^8.9.0",
     "request": "^2.88.2",
     "typescript": "^4.9.5"
