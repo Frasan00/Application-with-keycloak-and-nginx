@@ -7,7 +7,7 @@ export const HomePage = () => {
     const [value, setValue] = useState(0);
     const { setAuthenticated, jwt, keycloak } = useContext(AuthContext);
 
-    useEffect(()=> console.log("token: "+jwt))
+    useEffect(()=> console.log("token: "+jwt), [])
 
     const handleClick = ()=>{
         axios.post("http://localhost:5000/api/auth", {}, {

@@ -11,10 +11,11 @@
 2) Create a client (remember to change env var properly to match your client name, default: user)
 3) Set up client valid_redirect_uri to "http://<'your domain name'>:3000/*" and "http://<'your domain name'>/*"
 4) Set up the kind of authentication you want (register, email, remember me etc.) in login settings
+5) setup all the env variables to match your needs and the ip address to match yours
 
-### what this application do ###
+### what this application does ###
 
-- Once the configuration on keycloak is done, the react app is on "localhost:80/"
+- Once the configuration on keycloak is done, the react app is on "<'your domain name'>/"
 - You'll be redirected to the keycloak auth page, and once logged you'll be redirected to the homepage
-- Here you can do an action (a counter button) that sends a request to the nodejs serverthat via middleware it'll authenticate the token
+- Here you can do an action (a counter button) that sends a request to the nodejs serverthat via middleware it'll authenticate the token with the same domain as the react app
 - This is just a demostration of how to use keycloak and nginx tecnologies to handle user auth and reverse proxy requets to server
