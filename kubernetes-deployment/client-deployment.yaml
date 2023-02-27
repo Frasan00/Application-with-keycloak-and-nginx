@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: client
+spec:
+  selector:
+    matchLabels:
+      app: client
+  template:
+    metadata:
+      labels:
+        app: client
+    spec:
+      containers:
+      - name: client
+        image: franved/react-keycloak
+
+        env:
+        - name: REACT_APP_HOST_DOMAIN
+          value: fra.com
+        - name: REACT_APP_AUTH_SERVER_URL
+          value: http://fra.com:8080/auth
+        - name: REACT_APP_REALM
+          value: react-realm
+        - name: REACT_APP_CLIENTID
+          value: user
+
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 3000
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: client
+spec:
+  selector:
+    app: server
+  ports:
+  - port: 3000
+    targetPort: 3000
+
+
+

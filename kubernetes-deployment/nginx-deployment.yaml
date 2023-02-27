@@ -13,34 +13,71 @@ spec:
     spec:
       containers:
       - name: nginx
-        image: <Image>
+        image: nginx
         resources:
           limits:
             memory: "128Mi"
             cpu: "500m"
         ports:
-        - containerPort: 80
+          - containerPort: 80
         volumeMounts:
-          - name: nginx-conf
+          - name: nginx-config
             mountPath: /etc/nginx/nginx.conf
-            readOnly: true
+            subPath: nginx.conf
       volumes:
-        - name: nginx-conf
-          hostPath:
-            path: /path/to/nginx.conf
-            type: File
-      restartPolicy: Always
+        - name: nginx-config
+          configMap:
+            name: nginx-config
+    restartPolicy: Always
 
 ---
 
 apiVersion: v1
 kind: Service
 metadata:
-  name: nginx
+  name: nginx-service
 spec:
   selector:
     app: nginx
   ports:
-  - port: 80
-    targetPort: 80
+    - name: http
+      port: 80
+      targetPort: 80
 
+---
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx-config
+data:
+  nginx.conf: |
+    events {}
+
+    http {
+      server {
+        listen 80;
+
+        ### nginx gives back the servicies named in docker compose
+
+        location / {
+          proxy_pass http://client:3000;
+          proxy_set_header Host $host;
+          proxy_set_header X-Real-IP $remote_addr;
+          proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        }
+
+        location /auth {
+          proxy_pass http://keycloak:8080/auth;
+          proxy_set_header Host $host;
+          proxy_set_header X-Real-IP $remote_addr;
+          proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+          proxy_set_header X-Forwarded-Proto $scheme;
+        } 
+
+        location /api/ {
+          proxy_pass http://server:5000/api;
+        }
+
+      }
+    }
