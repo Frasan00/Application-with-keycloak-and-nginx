@@ -8,30 +8,32 @@ spec:
   rules:
   - host: fra.com
     http:
-    
       paths:
+      
       - path: /
         pathType: Prefix
         backend:
           service:
             name: client-service
-            port: 
-              name: "3000"
+            port:
+              number: 80
 
       - path: /auth
         pathType: Prefix
         backend:
           service:
             name: keycloak-service
-            port: 
-              name: "8080"
+            port:
+              number: 80
+            paths:
 
       - path: /api
         pathType: Prefix
         backend:
           service:
             name: server-service
-            port: 
+            port:
+              number: 80
 
 ---
 

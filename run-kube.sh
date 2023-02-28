@@ -22,7 +22,7 @@ kubectl apply -f client-deployment.yaml
 sleep 5
 
 # nginx
-kubectl apply -f nginx-deployment.yaml
+kubectl apply -f nginx-ingress.yaml
 
 # Informations
 sleep 2
