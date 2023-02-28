@@ -3,6 +3,7 @@ kind: Deployment
 metadata:
   name: server
 spec:
+  #replicas: 3
   selector:
     matchLabels:
       app: server
@@ -14,12 +15,24 @@ spec:
       containers:
       - name: server
         image: franved/server-keycloak
+
+        env:
+        - name: PORT
+          value: "5000"
+        - name: REACT_APP_AUTH_SERVER_URL
+          value: http://fra.com:8080/auth
+        - name: LOCALHOST_DOMAIN
+          value: fra.com
+        - name: REALM
+          value: react-realm
+
         resources:
           limits:
-            memory: "128Mi"
-            cpu: "500m"
+            memory: "1000Mi"
+            cpu: "1000m"
         ports:
         - containerPort: 5000
+  
 
 ---
 

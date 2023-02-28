@@ -13,7 +13,7 @@ spec:
     spec:
       containers:
       - name: client
-        image: franved/react-keycloak
+        image: franved/client-keycloak
 
         env:
         - name: REACT_APP_HOST_DOMAIN
@@ -27,8 +27,8 @@ spec:
 
         resources:
           limits:
-            memory: "128Mi"
-            cpu: "500m"
+            memory: "1000Mi"
+            cpu: "1000m"
         ports:
         - containerPort: 3000
 
@@ -40,7 +40,7 @@ metadata:
   name: client
 spec:
   selector:
-    app: server
+    app: client
   ports:
   - port: 3000
     targetPort: 3000

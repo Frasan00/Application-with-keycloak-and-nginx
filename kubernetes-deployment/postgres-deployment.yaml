@@ -34,8 +34,8 @@ spec:
 
         resources:
           limits:
-            memory: "128Mi"
-            cpu: "500m"
+            memory: "600Mi"
+            cpu: "600m"
         ports:
         - containerPort: 5432
         volumeMounts:

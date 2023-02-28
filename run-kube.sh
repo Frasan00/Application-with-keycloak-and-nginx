@@ -23,7 +23,7 @@ kubectl apply -f client-deployment.yaml
 kubectl apply -f nginx-deployment.yaml
 
 # Informations
-sleep 5
+sleep 4
 echo " "
 echo "Pods "
 kubectl get pods
