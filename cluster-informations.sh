@@ -1,6 +1,5 @@
 #!/bin/bash
 
-echo " "
 echo "Pods "
 kubectl get pods
 echo " "

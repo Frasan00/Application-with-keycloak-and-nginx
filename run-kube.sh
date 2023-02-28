@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# make sure to have a cluster running on your machine (es. minikube) and kubectl installed
+# make sure to have a cluster running on your machine (es. minikube or k3s) and kubectl installed
 # this file auto-deploys on your cluster all the microservicies
 
 cd kubernetes-deployment
@@ -19,11 +19,13 @@ kubectl apply -f server-deployment.yaml
 # client
 kubectl apply -f client-deployment.yaml
 
+sleep 5
+
 # nginx
 kubectl apply -f nginx-deployment.yaml
 
 # Informations
-sleep 4
+sleep 2
 echo " "
 echo "Pods "
 kubectl get pods

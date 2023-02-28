@@ -37,7 +37,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: client
+  name: client-service
 spec:
   selector:
     app: client
