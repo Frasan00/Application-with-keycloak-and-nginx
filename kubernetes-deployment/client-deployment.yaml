@@ -42,7 +42,8 @@ spec:
   selector:
     app: client
   ports:
-  - port: 3000
+  - protocol: TCP
+    port: 3000
     targetPort: 3000
 
 

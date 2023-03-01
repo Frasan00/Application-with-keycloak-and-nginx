@@ -8,3 +8,6 @@ kubectl get svc
 echo " "
 echo "Secrets "
 kubectl get secret
+echo " "
+echo "Ingress "
+kubectl get ingress nginx-ingress

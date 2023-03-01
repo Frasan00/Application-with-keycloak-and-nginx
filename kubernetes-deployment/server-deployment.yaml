@@ -44,6 +44,7 @@ spec:
   selector:
     app: server
   ports:
-  - port: 5000
+  - protocol: TCP
+    port: 5000
     targetPort: 5000
 
