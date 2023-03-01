@@ -11,6 +11,7 @@ spec:
       labels:
         app: keycloak
     spec:
+      restartPolicy: Always
       containers:
       - name: keycloak
         image: jboss/keycloak
@@ -54,8 +55,8 @@ spec:
               
         resources:
           limits:
-            memory: "1000Mi"
-            cpu: "1000m"
+            memory: "500Mi"
+            cpu: "500m"
         ports:
         - containerPort: 8080
 
@@ -72,4 +73,5 @@ spec:
   - protocol: TCP
     port: 8080
     targetPort: 8080
+    name: http
 

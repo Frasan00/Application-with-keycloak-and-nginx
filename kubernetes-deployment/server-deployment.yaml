@@ -12,6 +12,7 @@ spec:
       labels:
         app: server
     spec:
+      restartPolicy: Always
       containers:
       - name: server
         image: franved/server-keycloak
@@ -28,8 +29,8 @@ spec:
 
         resources:
           limits:
-            memory: "1000Mi"
-            cpu: "1000m"
+            memory: "500Mi"
+            cpu: "500m"
         ports:
         - containerPort: 5000
   
@@ -47,4 +48,5 @@ spec:
   - protocol: TCP
     port: 5000
     targetPort: 5000
+    name: http
 

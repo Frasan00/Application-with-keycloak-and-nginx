@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: client
+  name: client  
 spec:
   selector:
     matchLabels:
@@ -11,6 +11,7 @@ spec:
       labels:
         app: client
     spec:
+      restartPolicy: Always
       containers:
       - name: client
         image: franved/client-keycloak
@@ -27,8 +28,8 @@ spec:
 
         resources:
           limits:
-            memory: "1000Mi"
-            cpu: "1000m"
+            memory: "600Mi"
+            cpu: "600m"
         ports:
         - containerPort: 3000
 
@@ -45,6 +46,7 @@ spec:
   - protocol: TCP
     port: 3000
     targetPort: 3000
+    name: http
 
 
 

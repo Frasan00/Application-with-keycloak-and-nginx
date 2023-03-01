@@ -11,6 +11,7 @@ spec:
       labels:
         app: postgres
     spec:
+      restartPolicy: Always
       containers:
       - name: postgres
         image: postgres
@@ -34,8 +35,8 @@ spec:
 
         resources:
           limits:
-            memory: "600Mi"
-            cpu: "600m"
+            memory: "500Mi"
+            cpu: "500m"
         ports:
         - containerPort: 5432
         volumeMounts:
