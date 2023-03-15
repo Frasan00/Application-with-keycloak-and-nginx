@@ -6,19 +6,20 @@ import request from "request";
 // middleware to validate tokens from keycloak
 export const keycloakMiddleware = async (req: Request, res: Response, next: NextFunction) => {
     const token = req.headers["authorization"]?.split(" ")[1];
-    const localhost = process.env.LOCALHOST_DOMAIN || "";
-    const realm = process.env.REALM || "";
+    const parts = token.split('.');
+    const payload = JSON.parse(Buffer.from(parts[1], 'base64').toString());
+    const issuer = payload.iss;
  
-
     const config = {
         method: 'GET',
-        url: `http://${localhost}/auth/realms/${realm}/protocol/openid-connect/userinfo`,
+        url: `${issuer}/protocol/openid-connect/userinfo`,
         headers: {
           Authorization: `Bearer ${token}`,
         },
     }
 
     request(config, (error, response, body) => {
+        console.log(`Request sent to: ${issuer}/protocol/openid-connect/userinfo`);
         console.log(config);
         if (error) { 
           return res.status(400).json(error);
