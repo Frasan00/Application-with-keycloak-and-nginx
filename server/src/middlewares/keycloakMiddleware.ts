@@ -12,14 +12,17 @@ export const keycloakMiddleware = async (req: Request, res: Response, next: Next
 
     const config = {
         method: 'GET',
-        url: `http://${localhost}:8080/auth/realms/${realm}/protocol/openid-connect/userinfo`,
+        url: `http://${localhost}/auth/realms/${realm}/protocol/openid-connect/userinfo`,
         headers: {
-          authorization: `Bearer ${token}`
+          Authorization: `Bearer ${token}`,
         },
     }
 
     request(config, (error, response, body) => {
-        if (error) return res.status(400).json(error);
+        console.log(config);
+        if (error) { 
+          return res.status(400).json(error);
+        }
   
         // invalid token
         if (response.statusCode !== 200) {

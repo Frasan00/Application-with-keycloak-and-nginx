@@ -11,7 +11,7 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - db:/var/lib/postgresql
+      - db:/var/lib/postgres
 
   keycloak:
     image: jboss/keycloak
@@ -37,7 +37,7 @@ services:
     restart: always
     environment:
       PORT: 5000
-      LOCALHOST_DOMAIN: fra.com # change it with your domain name
+      LOCALHOST_DOMAIN: fra.com:8080 # change it with your domain name
       REALM: react-realm
     ports:
       - "5000:5000"
@@ -53,6 +53,7 @@ services:
       REACT_APP_AUTH_SERVER_URL: http://fra.com:8080/auth # change it with your host
       REACT_APP_REALM: react-realm
       REACT_APP_CLIENTID: user
+      REACT_APP_SERVER: http://localhost:5000/api/auth
     ports:
       - "3000:3000"
     depends_on:

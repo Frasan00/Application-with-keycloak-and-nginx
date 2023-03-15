@@ -10,7 +10,7 @@ export const HomePage = () => {
     useEffect(()=> console.log("token: "+jwt), [])
 
     const handleClick = ()=>{
-        axios.post("http://localhost:5000/api/auth", {}, {
+        axios.post(process.env.REACT_APP_SERVER, {}, {
             headers: {
                 authorization: `Bearer ${jwt}`,
             }})
