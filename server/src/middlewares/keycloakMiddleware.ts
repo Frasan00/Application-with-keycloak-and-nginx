@@ -6,6 +6,7 @@ import request from "request";
 // middleware to validate tokens from keycloak
 export const keycloakMiddleware = async (req: Request, res: Response, next: NextFunction) => {
     const token = req.headers["authorization"]?.split(" ")[1];
+    if(!token) return res.status(400).send("No token provided to the server by the client");
     const parts = token.split('.');
     const payload = JSON.parse(Buffer.from(parts[1], 'base64').toString());
     const issuer = payload.iss;
@@ -18,7 +19,7 @@ export const keycloakMiddleware = async (req: Request, res: Response, next: Next
         },
     }
 
-    request(config, (error, response, body) => {
+    request(config, (error: any, response: any, body: any) => {
         console.log(`Request sent to: ${issuer}/protocol/openid-connect/userinfo`);
         console.log(config);
         if (error) { 
