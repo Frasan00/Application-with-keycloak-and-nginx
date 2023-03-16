@@ -42,8 +42,8 @@ spec:
               
         resources:
           limits:
-            memory: "450Mi"
-            cpu: "450m"
+            memory: "650Mi"
+            cpu: "550m"
         ports:
         - containerPort: 8080
 

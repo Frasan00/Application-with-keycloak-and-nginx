@@ -13,6 +13,10 @@ spec:
         app: server
     spec:
       restartPolicy: Always
+      hostAliases:
+      - ip: 192.168.1.62 # change it with the ip address of your machine
+        hostnames:
+        - fra.com
       containers:
       - name: server
         image: franved/server-keycloak
@@ -41,4 +45,5 @@ spec:
   - protocol: TCP
     port: 5000
     targetPort: 5000
+  type: LoadBalancer
 
